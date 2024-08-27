@@ -103,11 +103,13 @@ export default function EditCatPage({ params }: { params: { id: string } }) {
 
   return (
     <Form {...form}>
+      <h1>
+        Editando a <span className="text-primary">{cat?.name}</span>
+      </h1>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4 max-w-xl border shadow-lg p-4 rounded-lg"
       >
-        <h2 className="font-semibold text-lg mb-2">Modificando un gato</h2>
         <FormField
           control={form.control}
           name="name"

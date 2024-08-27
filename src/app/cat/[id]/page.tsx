@@ -12,13 +12,14 @@ import {
 } from "@/components/ui/card";
 import BodySection from "@/components/custom/BodySection";
 import { Cat } from "@/types/cat";
-import { HeartIcon, PencilIcon } from "lucide-react";
+import { HeartIcon, PencilIcon, TrashIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { formatDate } from "@/lib/utils";
 import { useRecoilState } from "recoil";
 import { favAtom } from "@/app/@state/favorite-atom";
+import Image from "next/image";
 
 export default function CatDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -68,14 +69,26 @@ export default function CatDetailPage({ params }: { params: { id: string } }) {
 
   return (
     <Card className="w-[350px] shadow-lg">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          <span>{query.data?.name}</span>
-          <Button onClick={addFav} variant={isFav ? "default" : "outline"}>
-            <HeartIcon fill={isFav ? "#fff" : "#323232"} className="h-4 w-4" />
-          </Button>
+      <CardHeader className="gap-4">
+        <Image
+          src={query.data?.picture || "/images/default-cat.jpeg"}
+          alt={query.data?.name ?? ""}
+          width={540}
+          height={540}
+          className="w-full h-24 rounded object-cover"
+        />
+        <CardTitle className="flex flex-col gap-2">
+          <div className="flex justify-between items-center">
+            <span>{query.data?.name}&nbsp;</span>
+            <Button onClick={addFav} variant={isFav ? "default" : "outline"}>
+              <HeartIcon
+                fill={isFav ? "#fff" : "#323232"}
+                className="h-4 w-4"
+              />
+            </Button>
+          </div>
+          <span className="opacity-40 text-sm">({query.data?.breed})</span>
         </CardTitle>
-        <CardDescription>{query.data?.breed} </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
@@ -97,15 +110,20 @@ export default function CatDetailPage({ params }: { params: { id: string } }) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={() => mutation.mutate()}>
-          Eliminar
+        <Button variant="outline" asChild>
+          <Link href="/">Volver</Link>
         </Button>
-        <Button asChild className="flex gap-2">
-          <Link href={`edit/${params.id}`}>
-            <PencilIcon className="w-4 h-4" />
-            <span>Editar</span>
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => mutation.mutate()}>
+            <TrashIcon className="w-4 h-4" />
+          </Button>
+          <Button asChild className="flex gap-2">
+            <Link href={`edit/${params.id}`}>
+              <PencilIcon className="w-4 h-4" />
+              <span>Editar</span>
+            </Link>
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

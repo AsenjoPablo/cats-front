@@ -51,7 +51,7 @@ export default function Home() {
   return (
     <>
       <div className="flex items-center justify-between">
-        <h1 className="font-bold text-2xl tracking-widest">CATS</h1>
+        <h1>CATS</h1>
         <Button size="sm" asChild>
           <Link href={"create-cat"}>Añadir gato</Link>
         </Button>

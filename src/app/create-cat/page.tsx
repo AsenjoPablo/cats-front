@@ -116,87 +116,90 @@ export default function CreateCatPage() {
 
   return (
     <Form {...form}>
+      <h1>Añadiendo un nuevo gato</h1>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 max-w-xl"
+        className="space-y-4 max-w-3xl"
       >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nombre</FormLabel>
-              <FormControl>
-                <Input placeholder="Nombre" {...field} />
-              </FormControl>
-              <FormDescription>El nombre de tu nuevo gato</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="age"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Edad</FormLabel>
-              <FormControl>
-                <Input type="number" placeholder="Edad" {...field} />
-              </FormControl>
-              <FormDescription>Edad en años gatunos</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="breed"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Raza</FormLabel>
-              <FormControl>
-                <Input placeholder="Raza" {...field} />
-              </FormControl>
-              <FormDescription>Su raza de nacimiento</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="vaccinations"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Vacunas</FormLabel>
-              <FormControl>
-                <Input placeholder="Vacuna1, Vacuna2, ..." {...field} />
-              </FormControl>
-              <FormDescription>Separa las vacunas por comas</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field: { value, onChange, ...fieldProps } }) => (
-            <FormItem>
-              <FormLabel>Imagen</FormLabel>
-              <FormControl>
-                <Input
-                  {...fieldProps}
-                  type="file"
-                  accept="image/jpeg"
-                  onChange={(event) =>
-                    onChange(event.target.files && event.target.files[0])
-                  }
-                />
-              </FormControl>
-              <FormDescription />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre</FormLabel>
+                <FormControl>
+                  <Input placeholder="Nombre" {...field} />
+                </FormControl>
+                <FormDescription>El nombre de tu nuevo gato</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="age"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Edad</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="Edad" {...field} />
+                </FormControl>
+                <FormDescription>Edad en años gatunos</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="breed"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Raza</FormLabel>
+                <FormControl>
+                  <Input placeholder="Raza" {...field} />
+                </FormControl>
+                <FormDescription>Su raza de nacimiento</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="vaccinations"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Vacunas</FormLabel>
+                <FormControl>
+                  <Input placeholder="Vacuna1, Vacuna2, ..." {...field} />
+                </FormControl>
+                <FormDescription>Separa las vacunas por comas</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field: { value, onChange, ...fieldProps } }) => (
+              <FormItem>
+                <FormLabel>Imagen</FormLabel>
+                <FormControl>
+                  <Input
+                    {...fieldProps}
+                    type="file"
+                    accept="image/jpeg"
+                    onChange={(event) =>
+                      onChange(event.target.files && event.target.files[0])
+                    }
+                  />
+                </FormControl>
+                <FormDescription />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         {image && (
           <Image
             width={32}
