@@ -30,6 +30,8 @@ export default function CatDetailPage({ params }: { params: { id: string } }) {
       return response.json();
     },
     onSuccess: () => {
+      // lo elimina de favoritos
+      setFavState(favState.filter((fav) => fav !== params.id.toString()));
       router.push(`/`);
     },
   });

@@ -90,19 +90,7 @@ export default function EditCatPage({ params }: { params: { id: string } }) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const vaccines = values.vaccinations?.split(",").map((v) => v.trim());
-
     mutation.mutate(values);
-
-    // await fetch("http://localhost:8000/cats", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     ...values,
-    //     vaccinations: vaccines,
-    //   }),
-    // }).then((res) => {
-    //   console.log(res);
-    // });
   }
 
   if (isLoading) {
