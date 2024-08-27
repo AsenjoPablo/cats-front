@@ -1,4 +1,4 @@
-type Vaccine = {
+export type Vaccine = {
   type: string;
   dateAdministered: string;
 };

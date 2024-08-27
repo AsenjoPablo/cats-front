@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -11,50 +12,83 @@ import {
 } from "@/components/ui/card";
 import BodySection from "@/components/custom/BodySection";
 import { Cat } from "@/types/cat";
-import { PencilIcon } from "lucide-react";
+import { HeartIcon, PencilIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { formatDate } from "@/lib/utils";
 
-const cat: Cat = {
-  id: 1,
-  name: "Gato 1",
-  age: 2,
-  breed: "Siames",
-  vaccinations: [
-    {
-      type: "rabia",
-      dateAdministered: "2021-01-01",
+export default function CatDetailPage({ params }: { params: { id: string } }) {
+  const router = useRouter();
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch(`http://localhost:8000/cats/${params.id}`, {
+        method: "DELETE",
+      });
+      return response.json();
     },
-  ],
-};
+    onSuccess: () => {
+      router.push(`/`);
+    },
+  });
 
-export default function CatDetailPage() {
+  const query = useQuery<Cat>({
+    queryKey: ["cat", params.id],
+    queryFn: async () => {
+      const response = await fetch(`http://localhost:8000/cats/${params.id}`);
+      return response.json();
+    },
+  });
+
+  if (query.isLoading) {
+    return <BodySection>Cargando...</BodySection>;
+  }
+
+  if (query.isError) {
+    return <BodySection>Error al cargar el gato</BodySection>;
+  }
+
   return (
-    <BodySection>
-      <Card className="w-[350px]">
-        <CardHeader>
-          <CardTitle>{cat.name}</CardTitle>
-          <CardDescription>{cat.breed} </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-2">
-            <span>Edad: {cat.age}</span>
-            <span>Vacunas:</span>
-            <ul className="list-disc list-inside">
-              {cat.vaccinations.map((vaccine) => (
-                <li key={vaccine.type}>
-                  {vaccine.type} - {vaccine.dateAdministered}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Eliminar</Button>
-          <Button className="flex gap-2">
+    <Card className="w-[350px] shadow-lg">
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between">
+          <span>{query.data?.name}</span>
+          <Button>
+            <HeartIcon className="h-4 w-4"></HeartIcon>
+          </Button>
+        </CardTitle>
+        <CardDescription>{query.data?.breed} </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col gap-2">
+          <span>Edad: {query.data?.age}</span>
+          <span>Vacunas:</span>
+          <ul className="list-disc list-inside">
+            {query.data?.vaccinations.map((vaccine) => (
+              <li
+                key={vaccine.type}
+                className="flex flex-col my-2 border border-slate-200 px-4 py-2 rounded"
+              >
+                <span className="opacity-60 text-xs">
+                  {formatDate(vaccine.dateAdministered)}
+                </span>
+                <span>{vaccine.type}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Button variant="outline" onClick={() => mutation.mutate()}>
+          Eliminar
+        </Button>
+        <Button asChild className="flex gap-2">
+          <Link href={`edit/${params.id}`}>
             <PencilIcon className="w-4 h-4" />
             <span>Editar</span>
-          </Button>
-        </CardFooter>
-      </Card>
-    </BodySection>
+          </Link>
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
