@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
+import { Home, Package2 } from "lucide-react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +18,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+          <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-lg font-semibold md:text-base"
+            >
+              <Home className="h-6 w-6" />
+              <span>CATS APP</span>
+              <span className="sr-only">Home</span>
+            </Link>
+          </nav>
+        </header>
+        {children}
+      </body>
     </html>
   );
 }
