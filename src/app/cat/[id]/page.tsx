@@ -17,6 +17,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { formatDate } from "@/lib/utils";
+import { useRecoilState } from "recoil";
+import { favAtom } from "@/app/@state/favorite-atom";
 
 export default function CatDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -40,6 +42,20 @@ export default function CatDetailPage({ params }: { params: { id: string } }) {
     },
   });
 
+  // tenemos un estado de recoil que almacena los favoritos
+  const [favState, setFavState] = useRecoilState(favAtom);
+
+  const addFav = () => {
+    if (favState.filter((fav) => fav === params.id.toString()).length > 0) {
+      setFavState(favState.filter((fav) => fav !== params.id.toString()));
+    } else {
+      setFavState([...favState, params.id.toString()]);
+    }
+  };
+
+  const isFav =
+    favState.filter((fav) => fav === params.id.toString()).length > 0;
+
   if (query.isLoading) {
     return <BodySection>Cargando...</BodySection>;
   }
@@ -53,8 +69,8 @@ export default function CatDetailPage({ params }: { params: { id: string } }) {
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>{query.data?.name}</span>
-          <Button>
-            <HeartIcon className="h-4 w-4"></HeartIcon>
+          <Button onClick={addFav} variant={isFav ? "default" : "outline"}>
+            <HeartIcon fill={isFav ? "#fff" : "#323232"} className="h-4 w-4" />
           </Button>
         </CardTitle>
         <CardDescription>{query.data?.breed} </CardDescription>
