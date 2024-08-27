@@ -14,6 +14,7 @@ import { Vaccine } from "@/types/cat";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -121,7 +122,7 @@ export default function CreateCatPage() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4 max-w-3xl"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
             name="name"
@@ -199,17 +200,23 @@ export default function CreateCatPage() {
               </FormItem>
             )}
           />
+          {image && (
+            <Image
+              width={32}
+              height={32}
+              src={image}
+              alt="Gato"
+              className="w-full h-36 object-cover rounded-lg"
+            />
+          )}
         </div>
-        {image && (
-          <Image
-            width={32}
-            height={32}
-            src={image}
-            alt="Gato"
-            className="w-full object-cover rounded-lg"
-          />
-        )}
-        <Button type="submit">Guardar</Button>
+
+        <div className="flex items-center gap-2">
+          <Button asChild variant={"outline"} type="button">
+            <Link href="/">Cancelar</Link>
+          </Button>
+          <Button type="submit">Guardar</Button>
+        </div>
       </form>
     </Form>
   );
