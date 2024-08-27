@@ -18,6 +18,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+const MAX_FILE_SIZE = 5_000_000;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
 const formSchema = z.object({
   name: z
     .string()
@@ -29,6 +37,15 @@ const formSchema = z.object({
     .max(50, "Máximo 50 caracteres"),
   age: z.coerce.number().int().min(0, "Su edad no puede ser negativa"),
   vaccinations: z.string().optional(),
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size < MAX_FILE_SIZE, {
+      message: "Debe pesar menos de 7MB",
+    })
+    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+      message: "Debe ser una imagen",
+    })
+    .optional(),
 });
 
 export default function CreateCatPage() {
@@ -40,6 +57,7 @@ export default function CreateCatPage() {
       breed: "",
       age: 0,
       vaccinations: "",
+      image: null,
     },
   });
 
@@ -74,7 +92,8 @@ export default function CreateCatPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const vaccines = values.vaccinations?.split(",").map((v) => v.trim());
+    console.log(values);
+    return;
 
     mutation.mutate(values);
 
@@ -150,9 +169,28 @@ export default function CreateCatPage() {
             </FormItem>
           )}
         />
-        <Button disabled={!form.formState.isValid} type="submit">
-          Guardar
-        </Button>
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field: { value, onChange, ...fieldProps } }) => (
+            <FormItem>
+              <FormLabel>Imagen</FormLabel>
+              <FormControl>
+                <Input
+                  {...fieldProps}
+                  type="file"
+                  accept="image/jpeg"
+                  onChange={(event) =>
+                    onChange(event.target.files && event.target.files[0])
+                  }
+                />
+              </FormControl>
+              <FormDescription />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Guardar</Button>
       </form>
     </Form>
   );
