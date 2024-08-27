@@ -108,61 +108,63 @@ export default function EditCatPage({ params }: { params: { id: string } }) {
       </h1>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 max-w-xl border shadow-lg p-4 rounded-lg"
+        className="space-y-4 border shadow-lg p-4 rounded-lg"
       >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nombre</FormLabel>
-              <FormControl>
-                <Input placeholder="Nombre" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="age"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Edad</FormLabel>
-              <FormControl>
-                <Input type="number" placeholder="Edad" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="breed"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Raza</FormLabel>
-              <FormControl>
-                <Input placeholder="Raza" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="vaccinations"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Vacunas</FormLabel>
-              <FormControl>
-                <Input placeholder="Vacuna1, Vacuna2, ..." {...field} />
-              </FormControl>
-              <FormDescription>Separa las vacunas por comas</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre</FormLabel>
+                <FormControl>
+                  <Input placeholder="Nombre" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="age"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Edad</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="Edad" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="breed"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Raza</FormLabel>
+                <FormControl>
+                  <Input placeholder="Raza" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="vaccinations"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Vacunas</FormLabel>
+                <FormControl>
+                  <Input placeholder="Vacuna1, Vacuna2, ..." {...field} />
+                </FormControl>
+                <FormDescription>Separa las vacunas por comas</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <div className="flex gap-2">
           <Button asChild type="button" variant="outline">
             <Link href={`/cat/${params.id}`}>Volver</Link>

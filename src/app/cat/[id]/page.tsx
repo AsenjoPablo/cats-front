@@ -68,14 +68,14 @@ export default function CatDetailPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <Card className="w-[350px] shadow-lg">
+    <Card>
       <CardHeader className="gap-4">
         <Image
           src={query.data?.picture || "/images/default-cat.jpeg"}
           alt={query.data?.name ?? ""}
           width={540}
           height={540}
-          className="w-full h-24 rounded object-cover"
+          className="w-full h-24 md:h-36 rounded object-cover"
         />
         <CardTitle className="flex flex-col gap-2">
           <div className="flex justify-between items-center">
