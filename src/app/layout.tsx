@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import { Home } from "lucide-react";
+import { Cat, Home } from "lucide-react";
 import BodySection from "@/components/custom/BodySection";
 import QueryClientWrapper from "@/components/custom/queryClient";
 
@@ -28,7 +28,7 @@ export default function RootLayout({
                 href="/"
                 className="flex items-center gap-2 text-lg font-semibold md:text-base"
               >
-                <Home className="h-6 w-6" />
+                <Cat className="h-6 w-6" />
                 <span>CATS APP</span>
                 <span className="sr-only">Home</span>
               </Link>
