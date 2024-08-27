@@ -67,12 +67,15 @@ export default function CreateCatPage() {
   const mutation = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
       const vaccines: Vaccine[] = values.vaccinations
-        ? values.vaccinations?.split(",").map((v) => {
-            return {
-              type: v.trim(),
-              dateAdministered: new Date().toISOString(),
-            };
-          })
+        ? values.vaccinations
+            ?.split(",")
+            .filter((name) => name !== "")
+            .map((v) => {
+              return {
+                type: v.trim(),
+                dateAdministered: new Date().toISOString(),
+              };
+            })
         : [];
       return await fetch("http://localhost:8000/cats", {
         method: "POST",
