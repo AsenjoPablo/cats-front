@@ -29,7 +29,9 @@ export default function RootLayout({
                 className="flex items-center gap-2 text-lg font-semibold md:text-base"
               >
                 <Cat className="h-6 w-6" />
-                <span>CATS APP</span>
+                <span>
+                  <span className="text-primary font-bold">CATS</span> APP
+                </span>
                 <span className="sr-only">Home</span>
               </Link>
             </nav>
