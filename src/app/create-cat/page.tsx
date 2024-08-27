@@ -57,7 +57,7 @@ export default function CreateCatPage() {
       breed: "",
       age: 0,
       vaccinations: "",
-      image: null,
+      image: undefined,
     },
   });
 
@@ -92,21 +92,9 @@ export default function CreateCatPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    return;
-
     mutation.mutate(values);
-
-    // await fetch("http://localhost:8000/cats", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     ...values,
-    //     vaccinations: vaccines,
-    //   }),
-    // }).then((res) => {
-    //   console.log(res);
-    // });
   }
+
   return (
     <Form {...form}>
       <form
