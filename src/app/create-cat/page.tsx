@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Vaccine } from "@/types/cat";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -94,6 +95,24 @@ export default function CreateCatPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     mutation.mutate(values);
   }
+
+  const [image, setImage] = React.useState<string | null>(null);
+  const convert = (file: File) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      if (!reader.result) {
+        console.error("Error al convertir la imagen");
+        return;
+      }
+      setImage(reader.result.toString());
+    };
+
+    reader.readAsDataURL(file);
+  };
+
+  const watcher = form.watch("image");
+  if (watcher) convert(watcher);
 
   return (
     <Form {...form}>
@@ -178,6 +197,15 @@ export default function CreateCatPage() {
             </FormItem>
           )}
         />
+        {image && (
+          <Image
+            width={32}
+            height={32}
+            src={image}
+            alt="Gato"
+            className="w-full object-cover rounded-lg"
+          />
+        )}
         <Button type="submit">Guardar</Button>
       </form>
     </Form>
