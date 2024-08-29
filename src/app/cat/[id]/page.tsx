@@ -2,14 +2,6 @@
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import BodySection from "@/components/custom/BodySection";
 import { Cat } from "@/types/cat";
 import { HeartIcon, PencilIcon, TrashIcon } from "lucide-react";
@@ -68,37 +60,35 @@ export default function CatDetailPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <Card>
-      <CardHeader className="gap-4">
+    <div className="flex flex-col gap-4">
+      {/* header image */}
+      <div className="relative">
         <Image
-          src={query.data?.picture || "/images/default-cat.jpeg"}
+          src={query.data?.image || "/images/default-cat.jpeg"}
           alt={query.data?.name ?? ""}
           width={540}
           height={540}
           className="w-full h-24 md:h-36 rounded object-cover"
         />
-        <CardTitle className="flex flex-col gap-2">
-          <div className="flex justify-between items-center">
-            <span>{query.data?.name}&nbsp;</span>
-            <Button onClick={addFav} variant={isFav ? "default" : "outline"}>
-              <HeartIcon
-                fill={isFav ? "#fff" : "#323232"}
-                className="h-4 w-4"
-              />
-            </Button>
-          </div>
-          <span className="opacity-40 text-sm">({query.data?.breed})</span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-2">
-          <span>Edad: {query.data?.age}</span>
+
+        {/* overlay */}
+        <div className="absolute top-0 left-0 bg-gradient-to-br from-transparent to-black/50 w-full h-full" />
+
+        <h2 className="absolute bottom-2 right-2 text-white font-bold text-3xl tracking-widest">
+          {query.data?.name}
+        </h2>
+      </div>
+
+      {/* body */}
+      <span>Edad: {query.data?.age}</span>
+      {query.data && query.data.vaccinations.length > 0 ? (
+        <>
           <span>Vacunas:</span>
           <ul className="list-disc list-inside">
             {query.data?.vaccinations.map((vaccine) => (
               <li
                 key={vaccine.type}
-                className="flex flex-col my-2 border border-slate-200 px-4 py-2 rounded"
+                className="flex flex-col my-2 border border-green-600 border-dotted bg-green-200 px-4 py-2 rounded"
               >
                 <span className="opacity-60 text-xs">
                   {formatDate(vaccine.dateAdministered)}
@@ -107,24 +97,40 @@ export default function CatDetailPage({ params }: { params: { id: string } }) {
               </li>
             ))}
           </ul>
+        </>
+      ) : (
+        <div className="bg-red-200 border-red-500 text-red-900 p-3 border border-dotted rounded-lg">
+          <span>
+            <strong>ATENCIÓN:</strong>&nbsp; No tiene vacunas
+          </span>
         </div>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" asChild>
-          <Link href="/">Volver</Link>
+      )}
+
+      <div className="flex gap-4">
+        <Button
+          onClick={addFav}
+          variant={isFav ? "default" : "outline"}
+          className="flex gap-2"
+        >
+          <HeartIcon fill={isFav ? "#fff" : "#323232"} className="h-4 w-4" />
+          <span>Favorito</span>
         </Button>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => mutation.mutate()}>
-            <TrashIcon className="w-4 h-4" />
-          </Button>
-          <Button asChild className="flex gap-2">
-            <Link href={`edit/${params.id}`}>
-              <PencilIcon className="w-4 h-4" />
-              <span>Editar</span>
-            </Link>
-          </Button>
-        </div>
-      </CardFooter>
-    </Card>
+        <Button asChild className="flex gap-2">
+          <Link href={`edit/${params.id}`}>
+            <PencilIcon className="w-4 h-4" />
+            <span>Editar</span>
+          </Link>
+        </Button>
+      </div>
+      <hr />
+
+      <Button
+        onClick={() => mutation.mutate()}
+        variant={"ghost"}
+        className="text-red-500"
+      >
+        Eliminar
+      </Button>
+    </div>
   );
 }

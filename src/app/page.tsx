@@ -9,11 +9,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Cat } from "@/types/cat";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
+  const queryClient = useQueryClient();
   const {
     data: cats,
     isLoading,
@@ -26,18 +27,21 @@ export default function Home() {
     },
   });
 
-  const mutation = useMutation({
+  const deleteMutation = useMutation({
     mutationFn: async () => {
       const response = await fetch("http://localhost:8000/cats", {
         method: "DELETE",
       });
       return response.json();
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
   });
 
   const handleDeleteAll = () => {
     // modal de confirmación
-    mutation.mutate();
+    deleteMutation.mutate();
   };
 
   if (isLoading) {
@@ -83,7 +87,7 @@ export default function Home() {
               <TableRow key={cat.id}>
                 <TableCell className="flex items-center gap-2">
                   <Image
-                    src={cat.picture || "/images/default-cat.jpeg"}
+                    src={cat.image || "/images/default-cat.jpeg"}
                     alt={cat.name}
                     width={32}
                     height={32}

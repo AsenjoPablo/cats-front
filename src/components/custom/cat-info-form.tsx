@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Vaccine } from "@/types/cat";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -50,7 +50,7 @@ const formSchema = z.object({
     .optional(),
 });
 
-export default function CreateCatPage() {
+export default function CatInfoForm({ id }: { id: string }) {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,7 +63,17 @@ export default function CreateCatPage() {
     },
   });
 
-  // http
+  //en  el modo de edición tenemos un id, por lo que podemos hacer un fetch a los datos
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["cat", id],
+    queryFn: async () => {
+      const response = await fetch(`http://localhost:8000/cats/${id}`);
+      return await response.json();
+    },
+    enabled: id !== undefined,
+  });
+
+  // mutaciones de creación y edición
   const mutation = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
       const vaccines: Vaccine[] = values.vaccinations
@@ -79,7 +89,7 @@ export default function CreateCatPage() {
         : [];
 
       return await fetch("http://localhost:8000/cats", {
-        method: "POST",
+        method: id ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -122,7 +132,9 @@ export default function CreateCatPage() {
 
   return (
     <Form {...form}>
-      <h1>Añadiendo un nuevo gato</h1>
+      <h1>
+        {id ? "Editar" : "Crear"} gato {id ? data?.name : ""}
+      </h1>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4 max-w-3xl"

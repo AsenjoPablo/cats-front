@@ -9,5 +9,5 @@ export type Cat = {
   age: number;
   breed: string;
   vaccinations: Vaccine[];
-  picture?: string;
+  image?: string;
 };
