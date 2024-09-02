@@ -44,7 +44,7 @@ export default function Home() {
     deleteMutation.mutate();
   };
 
-  if (isLoading) {
+  if (isLoading && !cats) {
     return <p>Cargando...</p>;
   }
 
