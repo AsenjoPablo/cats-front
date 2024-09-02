@@ -17,7 +17,7 @@ export default function CatDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await fetch(`http://localhost:8000/cats/${params.id}`, {
+      const response = await fetch(`${process.env.API_URL}/cats/${params.id}`, {
         method: "DELETE",
       });
       return response.json();
@@ -32,7 +32,7 @@ export default function CatDetailPage({ params }: { params: { id: string } }) {
   const query = useQuery<Cat>({
     queryKey: ["cat", params.id],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:8000/cats/${params.id}`);
+      const response = await fetch(`${process.env.API_URL}/cats/${params.id}`);
       return response.json();
     },
   });

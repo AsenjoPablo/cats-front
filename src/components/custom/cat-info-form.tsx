@@ -67,7 +67,7 @@ export default function CatInfoForm({ id }: { id: string }) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["cat", id],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:8000/cats/${id}`);
+      const response = await fetch(`${process.env.API_URL}/cats/${id}`);
       return await response.json();
     },
     enabled: id !== undefined,
@@ -88,7 +88,7 @@ export default function CatInfoForm({ id }: { id: string }) {
             })
         : [];
 
-      return await fetch("http://localhost:8000/cats", {
+      return await fetch(`${process.env.API_URL}/cats`, {
         method: id ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",

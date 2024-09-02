@@ -22,14 +22,14 @@ export default function Home() {
   } = useQuery<Cat[]>({
     queryKey: ["cats-list"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:8000/cats");
+      const response = await fetch(`${process.env.API_URL}/cats`);
       return response.json();
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      const response = await fetch("http://localhost:8000/cats", {
+      const response = await fetch(`${process.env.API_URL}/cats`, {
         method: "DELETE",
       });
       return response.json();

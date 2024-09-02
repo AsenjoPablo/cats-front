@@ -78,7 +78,7 @@ export default function CreateCatPage() {
             })
         : [];
 
-      return await fetch("http://localhost:8000/cats", {
+      return await fetch(`${process.env.API_URL}/cats`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

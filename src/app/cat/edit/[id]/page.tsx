@@ -62,7 +62,7 @@ export default function EditCatPage({ params }: { params: { id: string } }) {
   } = useQuery<Cat>({
     queryKey: ["cat", params.id],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:8000/cats/${params.id}`);
+      const response = await fetch(`${process.env.API_URL}/cats/${params.id}`);
       return response.json();
     },
   });
@@ -78,7 +78,7 @@ export default function EditCatPage({ params }: { params: { id: string } }) {
             };
           })
         : [];
-      return await fetch(`http://localhost:8000/cats/${params.id}`, {
+      return await fetch(`${process.env.API_URL}/cats/${params.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
