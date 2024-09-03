@@ -85,15 +85,17 @@ export default function Home() {
             }
             {cats?.map((cat) => (
               <TableRow key={cat.id}>
-                <TableCell className="flex items-center gap-2">
-                  <Image
-                    src={cat.image || "/images/default-cat.jpeg"}
-                    alt={cat.name}
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
-                  <span>{cat.name}</span>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src={cat.image || "/images/default-cat.jpeg"}
+                      alt={cat.name}
+                      width={32}
+                      height={32}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                    <span>{cat.name}</span>
+                  </div>
                 </TableCell>
                 <TableCell>{cat.breed}</TableCell>
                 <TableCell className="flex justify-end">
